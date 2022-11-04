@@ -1,0 +1,33 @@
+from pynput.keyboard import Key, Controller, Listener
+
+keyboard = Controller()
+entry = []
+
+print("Enter sample here: ")
+
+while True:
+    try:
+        x = input()
+    except EOFError:
+        break
+    entry.append(x)
+
+presses = []
+for x in range(len(entry)):
+    if "enter" in entry[x].lower():
+        for y in entry[x + 1:]:
+            if y == "" or y.endswith("?") or y.endswith(":") or y[0].isupper():
+                break
+            else:
+                presses.append(y)
+
+
+def on_press(key):
+    if key == Key.right:
+        for f in presses:
+            for g in f:
+                keyboard.press(g)
+
+
+with Listener(on_press=on_press) as listener:
+    listener.join()
