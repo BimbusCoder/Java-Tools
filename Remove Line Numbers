@@ -1,0 +1,31 @@
+print("Enter lines:")
+lines_input = []
+while True:
+    try:
+        x = input()
+    except EOFError:
+        break
+    lines_input.append(x)
+removed = []
+for x in lines_input:
+    found = ""
+    for y in x:
+        if y.isdigit():
+            found += y
+        elif y == " ":
+            found += " "
+        else:
+            break
+    removed.append(x.replace(found, ""))
+joined = ""
+next_tab = False
+skipped_once = False
+for x in removed:
+    if "{" in x:
+        next_tab = True
+        skipped_once = False
+    if "}" in x:
+        next_tab = False
+    joined += "\n\t" + x if next_tab and skipped_once else "\n" + x
+    skipped_once = True
+print(joined)
